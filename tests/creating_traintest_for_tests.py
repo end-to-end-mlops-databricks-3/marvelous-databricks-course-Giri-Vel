@@ -1,4 +1,4 @@
-#
+# This is only for rough work purposes, not to be used for main
 
 import os
 

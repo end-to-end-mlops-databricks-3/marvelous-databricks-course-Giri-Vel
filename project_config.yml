@@ -1,12 +1,12 @@
 prd:
   catalog_name: mlops_prd
-  schema_name: hotel_res
+  schema_name: giridhar
 acc:
   catalog_name: mlops_acc
-  schema_name: hotel_res
+  schema_name: giridhar
 dev:
   catalog_name: mlops_dev
-  schema_name: hotel_res
+  schema_name: giridhar
 
 id_column:
   - Booking_ID

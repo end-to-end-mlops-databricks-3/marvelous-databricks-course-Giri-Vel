@@ -1,3 +1,15 @@
+# Databricks notebook source
+
+# % pip install -e ..
+# %restart_python
+
+# from pathlib import Path
+# import sys
+# sys.path.append(str(Path.cwd().parent / 'src'))
+
+
+# COMMAND ----------
+
 import pandas as pd
 import yaml
 from loguru import logger
@@ -8,45 +20,52 @@ from pyspark.sql import SparkSession
 from hotel_reservations.config import ProjectConfig
 from hotel_reservations.data_processor import DataProcessor
 
-config_path = "project_config.yml"
+# spark = SparkSession.builder.getOrCreate()
+# print(spark.version)
 
-# config_path = "marvelous-databricks-course-Giri-Vel/project_config.yml"
-config = ProjectConfig.from_yaml(config_path=config_path, env="dev")
 
-setup_logging(log_file=f"/Volumes/{config.catalog_name}/{config.schema_name}/logs/marvelous-1.log")
+config = ProjectConfig.from_yaml(config_path="project_config.yml", env="dev")
+
+setup_logging(log_file="logs/marvelous-1.log")
 
 logger.info("Configuration loaded:")
 logger.info(yaml.dump(config, default_flow_style=False))
 
+# COMMAND ----------
 
-# Load the hotel reservations dataset
+# Load the hotel_reservation dataset
 spark = SparkSession.builder.getOrCreate()
 
-# reading the dataset
-df = pd.read_csv(
-    "dataset/Hotel_Reservations.csv",
-    header=0,
-)
+filepath = "../dataset/Hotel_Reservations.csv"
 
-# df = spark.read.csv(
-#     # f"/Volumes/{config.catalog_name}/{config.schema_name}/data/Hotel_Reservations.csv",
-#     f"marvelous-databricks-course-Giri-Vel\dataset\Hotel_Reservations.csv",
-#     header=True,
-#     inferSchema=True,
-# ).toPandas()
+# Load the data
+df = pd.read_csv(filepath)
 
-# Preprocess the data
+
+# COMMAND ----------
+# DataProcessor dataset
 with Timer() as preprocess_timer:
+    # Initialize DataProcessor
     data_processor = DataProcessor(df, config, spark)
+
+    # Preprocess the data
     data_processor.preprocess()
 
 logger.info(f"Data preprocessing: {preprocess_timer}")
+
+# COMMAND ----------
 
 # Split the data
 X_train, X_test = data_processor.split_data()
 logger.info("Training set shape: %s", X_train.shape)
 logger.info("Test set shape: %s", X_test.shape)
 
+# COMMAND ----------
 # Save to catalog
 logger.info("Saving data to catalog")
 data_processor.save_to_catalog(X_train, X_test)
+
+# Enable change data feed (only once!)
+logger.info("Enable change data feed")
+data_processor.enable_change_data_feed()
+# COMMAND ----------
