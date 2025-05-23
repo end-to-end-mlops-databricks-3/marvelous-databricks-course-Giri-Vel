@@ -34,3 +34,6 @@ cat_features:
 
 
 target: booking_status
+
+
+experiment_name_custom: /Shared/giridhar-model-custom
