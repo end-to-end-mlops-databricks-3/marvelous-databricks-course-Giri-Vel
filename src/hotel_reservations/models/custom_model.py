@@ -14,7 +14,7 @@ from typing import Literal
 import mlflow
 import numpy as np
 import pandas as pd
-from lightgbm import LGBMRegressor
+from lightgbm import LGBMClassifier
 from loguru import logger
 from mlflow import MlflowClient
 from mlflow.data.dataset_source import DatasetSource
@@ -28,6 +28,8 @@ from sklearn.preprocessing import OneHotEncoder
 
 from hotel_reservations.config import ProjectConfig, Tags
 from hotel_reservations.utils import adjust_predictions
+from mlflow import pyfunc
+from mlflow.models import ModelSignature
 
 
 class HousePriceModelWrapper(mlflow.pyfunc.PythonModel):
@@ -45,7 +47,8 @@ class HousePriceModelWrapper(mlflow.pyfunc.PythonModel):
 
     def predict(
         self, context: mlflow.pyfunc.PythonModelContext, model_input: pd.DataFrame | np.ndarray
-    ) -> dict[str, float]:
+    # ) -> dict[str, float]:
+    ) -> pd.DataFrame:
         """Make predictions using the wrapped model.
 
         :param context: The MLflow context (unused in this implementation).
@@ -83,11 +86,20 @@ class CustomModel:
         self.num_features = self.config.num_features
         self.cat_features = self.config.cat_features
         self.target = self.config.target
-        self.parameters = self.config.parameters
+        self.parameters = {
+            "learning_rate": 0.1,
+            "n_estimators": 1000,
+            "max_depth": 8,
+            "num_leaves": 31,
+            "min_child_samples": 20,
+            "subsample": 0.8,
+            "colsample_bytree": 0.8,
+            "random_state": 42,
+        }
         self.catalog_name = self.config.catalog_name
         self.schema_name = self.config.schema_name
         self.experiment_name = self.config.experiment_name_custom
-        self.tags = tags.dict()
+        self.tags = tags.model_dump()
         self.code_paths = code_paths
 
     def load_data(self) -> None:
@@ -119,7 +131,7 @@ class CustomModel:
         )
 
         self.pipeline = Pipeline(
-            steps=[("preprocessor", self.preprocessor), ("regressor", LGBMRegressor(**self.parameters))]
+            steps=[("preprocessor", self.preprocessor), ("Classifier", LGBMClassifier(**self.parameters))]
         )
         logger.info("✅ Preprocessing pipeline defined.")
 
@@ -137,7 +149,8 @@ class CustomModel:
         additional_pip_deps = ["pyspark==3.5.0"]
         for package in self.code_paths:
             whl_name = package.split("/")[-1]
-            additional_pip_deps.append(f"./code/{whl_name}")
+            # additional_pip_deps.append(f"./code/{whl_name}")
+            additional_pip_deps.append(f"hotel_reservations==0.0.1")
 
         with mlflow.start_run(tags=self.tags) as run:
             self.run_id = run.info.run_id
@@ -153,7 +166,7 @@ class CustomModel:
             logger.info(f"📊 R2 Score: {r2}")
 
             # Log parameters and metrics
-            mlflow.log_param("model_type", "LightGBM with preprocessing")
+            mlflow.log_param("model_type", "LightGBM classifier with preprocessing")
             mlflow.log_params(self.parameters)
             mlflow.log_metric("mse", mse)
             mlflow.log_metric("mae", mae)
@@ -181,7 +194,7 @@ class CustomModel:
 
             mlflow.pyfunc.log_model(
                 python_model=HousePriceModelWrapper(self.pipeline),
-                artifact_path="pyfunc-house-price-model",
+                artifact_path="pyfunc-hotres-custom-model",
                 code_paths=self.code_paths,
                 conda_env=conda_env,
                 signature=signature,
@@ -195,8 +208,8 @@ class CustomModel:
         """
         logger.info("🔄 Registering the model in UC...")
         registered_model = mlflow.register_model(
-            model_uri=f"runs:/{self.run_id}/pyfunc-house-price-model",
-            name=f"{self.catalog_name}.{self.schema_name}.house_prices_model_custom",
+            model_uri=f"runs:/{self.run_id}/pyfunc-hotres-custom-model",
+            name=f"{self.catalog_name}.{self.schema_name}.giridhar_model_custom",
             tags=self.tags,
         )
         logger.info(f"✅ Model registered as version {registered_model.version}.")
@@ -205,7 +218,7 @@ class CustomModel:
 
         client = MlflowClient()
         client.set_registered_model_alias(
-            name=f"{self.catalog_name}.{self.schema_name}.house_prices_model_custom",
+            name=f"{self.catalog_name}.{self.schema_name}.giridhar_model_custom",
             alias="latest-model",
             version=latest_version,
         )
@@ -249,7 +262,7 @@ class CustomModel:
         """
         logger.info("🔄 Loading model from MLflow alias 'production'...")
 
-        model_uri = f"models:/{self.catalog_name}.{self.schema_name}.house_prices_model_custom@latest-model"
+        model_uri = f"models:/{self.catalog_name}.{self.schema_name}.giridhar_model_custom@latest-model"
         model = mlflow.pyfunc.load_model(model_uri)
 
         logger.info("✅ Model successfully loaded.")

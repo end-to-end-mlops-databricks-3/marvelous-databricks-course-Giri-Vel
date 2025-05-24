@@ -1,0 +1,15 @@
+artifact_uri: file:///d:/MLOPS%20learning/maven_mlops/marvelous-databricks-course-Giri-Vel/notebooks/mlruns/559049679087602840/33f8d0ede0eb4245b514cdded8e8bb60/artifacts
+end_time: 1748090883039
+entry_point_name: ''
+experiment_id: '559049679087602840'
+lifecycle_stage: active
+run_id: 33f8d0ede0eb4245b514cdded8e8bb60
+run_name: demo-run-2
+run_uuid: 33f8d0ede0eb4245b514cdded8e8bb60
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748090442133
+status: 3
+tags: []
+user_id: lenovo

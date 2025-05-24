@@ -7,3 +7,9 @@ df.show(5)
 # COMMAND ----------
 
 print("Spark version:", spark.version)
+
+# COMMAND ----------
+# spark.stop()
+# COMMAND ----------
+spark.range(1).count()
+# COMMAND ----------

@@ -1,0 +1,40 @@
+{
+    "info": {
+        "artifact_uri": "dbfs:/databricks/mlflow-tracking/3176704041890446/01d4c4259bc145928aed2fe258569caa/artifacts",
+        "end_time": 1748091487244,
+        "experiment_id": "3176704041890446",
+        "lifecycle_stage": "active",
+        "run_id": "01d4c4259bc145928aed2fe258569caa",
+        "run_name": "demo-run-2",
+        "run_uuid": "01d4c4259bc145928aed2fe258569caa",
+        "start_time": 1748091484838,
+        "status": "FINISHED",
+        "user_id": ""
+    },
+    "data": {
+        "metrics": {
+            "metric1": 1.0,
+            "metric2": 2.0
+        },
+        "params": {
+            "type": "demo"
+        },
+        "tags": {
+            "branch": "week2",
+            "git_sha": "1234567890abcd",
+            "mlflow.databricks.cluster.id": "0524-123004-4t0rsa83",
+            "mlflow.databricks.cluster.info": "{\"cluster_name\":\"giridharanvel@gmail.com's Cluster\",\"spark_version\":\"15.4.x-scala2.12\",\"node_type_id\":\"i3.xlarge\",\"driver_node_type_id\":\"i3.xlarge\",\"autotermination_minutes\":120,\"disk_spec\":{},\"num_workers\":0}",
+            "mlflow.databricks.cluster.libraries": "{\"installable\":[],\"redacted\":[]}",
+            "mlflow.databricks.notebook.commandID": "1748090038280_9088175129975369793_bd73f1bbcdac4e6bbc806b02e961b540",
+            "mlflow.note.content": "demo run",
+            "mlflow.runColor": "#479a5f",
+            "mlflow.runName": "demo-run-2",
+            "mlflow.source.name": "c:\\Users\\lenovo\\dbconnect311\\Lib\\site-packages\\ipykernel_launcher.py",
+            "mlflow.source.type": "LOCAL",
+            "mlflow.user": "giridharanvel@gmail.com"
+        }
+    },
+    "inputs": {
+        "dataset_inputs": []
+    }
+}
