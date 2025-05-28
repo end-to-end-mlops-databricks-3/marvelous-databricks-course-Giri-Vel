@@ -48,16 +48,6 @@ y_train = train_set[config.target]
 # Create a preprocessing and model pipeline
 
 # set the parameters for the model
-train_parameters = {
-    "learning_rate": 0.1,
-    "n_estimators": 1000,
-    "max_depth": 8,
-    "num_leaves": 31,
-    "min_child_samples": 20,
-    "subsample": 0.8,
-    "colsample_bytree": 0.8,
-    "random_state": 42,
-}
 
 pipeline = Pipeline(
         steps=[("preprocessor", ColumnTransformer(

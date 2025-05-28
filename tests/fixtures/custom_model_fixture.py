@@ -19,13 +19,13 @@ from hotel_reservations.models.custom_model import CustomModel
 whl_file_name = None  # Global variable to store the .whl file name
 
 
-@pytest.fixture(scope="session")
-def tags() -> Tags:
-    """Create and return a Tags instance for the test session.
+# @pytest.fixture(scope="session")
+# def tags() -> Tags:
+#     """Create and return a Tags instance for the test session.
 
-    This fixture provides a Tags object with predefined values for git_sha, branch, and job_run_id.
-    """
-    return Tags(git_sha="wxyz", branch="test", job_run_id="9")
+#     This fixture provides a Tags object with predefined values for git_sha, branch, and job_run_id.
+#     """
+#     return Tags(git_sha="wxyz", branch="test", job_run_id="9")
 
 
 @pytest.fixture(scope="session", autouse=True)
