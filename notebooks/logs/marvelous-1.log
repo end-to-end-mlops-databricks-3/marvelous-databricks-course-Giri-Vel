@@ -1,0 +1,83 @@
+2025-05-19 16:52:26.709 | INFO     | __main__:<module>:16 - Configuration loaded:
+2025-05-19 16:52:26.714 | INFO     | __main__:<module>:17 - !!python/object:hotel_reservations.config.ProjectConfig
+__dict__:
+  cat_features:
+  - type_of_meal_plan
+  - required_car_parking_space
+  - room_type_reserved
+  - market_segment_type
+  catalog_name: mlops_dev
+  id_column:
+  - Booking_ID
+  num_features:
+  - no_of_adults
+  - no_of_children
+  - no_of_weekend_nights
+  - no_of_week_nights
+  - lead_time
+  - repeated_guest
+  - no_of_previous_cancellations
+  - no_of_previous_bookings_not_canceled
+  - avg_price_per_room
+  - no_of_special_requests
+  - arrival_date
+  - arrival_year
+  - arrival_month
+  schema_name: hotel_res
+  target: booking_status
+__pydantic_extra__: null
+__pydantic_fields_set__: !!set
+  cat_features: null
+  catalog_name: null
+  id_column: null
+  num_features: null
+  schema_name: null
+  target: null
+__pydantic_private__: null
+
+2025-05-19 16:53:59.839 | INFO     | __main__:<module>:9 - Data preprocessing: Elapsed time: 0.1135 seconds
+2025-05-19 16:54:14.228 | INFO     | __main__:<module>:3 - Training set shape: %s
+2025-05-19 16:54:14.230 | INFO     | __main__:<module>:4 - Test set shape: %s
+2025-05-19 16:54:21.921 | INFO     | __main__:<module>:2 - Saving data to catalog
+2025-05-19 17:05:36.096 | INFO     | __main__:<module>:16 - Configuration loaded:
+2025-05-19 17:05:36.101 | INFO     | __main__:<module>:17 - !!python/object:hotel_reservations.config.ProjectConfig
+__dict__:
+  cat_features:
+  - type_of_meal_plan
+  - required_car_parking_space
+  - room_type_reserved
+  - market_segment_type
+  catalog_name: mlops_dev
+  id_column:
+  - Booking_ID
+  num_features:
+  - no_of_adults
+  - no_of_children
+  - no_of_weekend_nights
+  - no_of_week_nights
+  - lead_time
+  - repeated_guest
+  - no_of_previous_cancellations
+  - no_of_previous_bookings_not_canceled
+  - avg_price_per_room
+  - no_of_special_requests
+  - arrival_date
+  - arrival_year
+  - arrival_month
+  schema_name: giridhar
+  target: booking_status
+__pydantic_extra__: null
+__pydantic_fields_set__: !!set
+  cat_features: null
+  catalog_name: null
+  id_column: null
+  num_features: null
+  schema_name: null
+  target: null
+__pydantic_private__: null
+
+2025-05-19 17:06:10.814 | INFO     | __main__:<module>:9 - Data preprocessing: Elapsed time: 0.0433 seconds
+2025-05-19 17:06:43.052 | INFO     | __main__:<module>:3 - Training set shape: %s
+2025-05-19 17:06:43.054 | INFO     | __main__:<module>:4 - Test set shape: %s
+2025-05-19 17:06:53.746 | INFO     | __main__:<module>:2 - Saving data to catalog
+2025-05-19 17:07:37.769 | INFO     | __main__:<module>:6 - Enable change data feed
