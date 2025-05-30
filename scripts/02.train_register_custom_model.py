@@ -107,11 +107,22 @@ except (argparse.ArgumentError, SystemExit):
 root_path = args.root_path
 config_path = root_path  # points to project_config.yml
 
-url = "sc://${Env:DATABRICKS_HOST}:15002?token={Env:DATABRICKS_TOKEN}&clusterId=${Env:DATABRICKS_CLUSTERID}"
+host = os.environ["DATABRICKS_HOST"].replace("https://", "")
+token = os.environ["DATABRICKS_TOKEN"]
+cluster = os.environ["DATABRICKS_CLUSTERID"]
+# the below url would work when code is executed from gitbash to connect to DBR
+url = f"sc://{host}:15002?token={token}&clusterId={cluster}"
+
+# url = "sc://${Env:DATABRICKS_HOST}:15002?token={Env:DATABRICKS_TOKEN}&clusterId=${Env:DATABRICKS_CLUSTERID}"
 
 
 config = ProjectConfig.from_yaml(config_path=config_path, env=args.env)
 spark = SparkSession.builder.remote(url).getOrCreate()
+# trying to see if this would work 
+spark.conf.set("spark.databricks.service.address", f"https://{host}")
+spark.conf.set("spark.databricks.service.token", token)
+spark.conf.set("spark.databricks.clusterId", cluster)
+
 dbutils = DBUtils(spark)
 tags_dict = {"git_sha": args.git_sha, "branch": args.branch, "job_run_id": args.job_run_id}
 tags = Tags(**tags_dict)

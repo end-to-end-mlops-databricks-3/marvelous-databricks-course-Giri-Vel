@@ -1,18 +1,53 @@
 """Unit tests for CustomModel."""
 
 import mlflow
+import os
 import pandas as pd
 from conftest import CATALOG_DIR, TRACKING_URI
-from lightgbm import LGBMRegressor
+from lightgbm import LGBMClassifier, LGBMRegressor
 from loguru import logger
 from mlflow.entities.model_registry.registered_model import RegisteredModel
 from mlflow.tracking import MlflowClient
 from pyspark.sql import SparkSession
+
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
 from hotel_reservations.config import ProjectConfig, Tags
 from hotel_reservations.models.custom_model import CustomModel
+
+import pytest
+from hotel_reservations import PROJECT_DIR
+
+from pyspark.dbconnect import DatabricksSession
+import pyspark.dbconnect as dbconnect
+from pyspark.sql import SparkSession
+
+# Monkey-patch the DatabricksSession class to be SparkSession
+dbconnect.DatabricksSession = SparkSession
+# Make your local SparkSession appear as DatabricksSession
+# CustomModel.DatabricksSession = SparkSession
+
+@pytest.fixture(scope="session")
+def config() -> ProjectConfig:
+    yaml_path = PROJECT_DIR / "project_config.yml"
+    return ProjectConfig.from_yaml(str(yaml_path), env="dev")
+
+@pytest.fixture(scope="session")
+def tags() -> Tags:
+    return Tags(git_sha="wxyz", branch="week2_test", job_run_id="9")
+@pytest.fixture(scope="session")
+def spark_session() -> SparkSession:
+    # Ensure no Spark Connect settings interfere with local mode
+    os.environ.pop("SPARK_REMOTE", None)
+    os.environ.pop("SPARK_MASTER", None)
+
+    return (
+        SparkSession.builder
+        .master("local[*]")
+        .appName("pytest")
+        .getOrCreate()
+    )
 
 mlflow.set_tracking_uri(TRACKING_URI)
 
@@ -84,7 +119,7 @@ def test_prepare_features(mock_custom_model: CustomModel) -> None:
     assert isinstance(mock_custom_model.pipeline, Pipeline)
     assert isinstance(mock_custom_model.pipeline.steps, list)
     assert isinstance(mock_custom_model.pipeline.steps[0][1], ColumnTransformer)
-    assert isinstance(mock_custom_model.pipeline.steps[1][1], LGBMRegressor)
+    assert isinstance(mock_custom_model.pipeline.steps[1][1], LGBMClassifier)
 
 
 def test_train(mock_custom_model: CustomModel) -> None:
@@ -98,7 +133,9 @@ def test_train(mock_custom_model: CustomModel) -> None:
     mock_custom_model.load_data()
     mock_custom_model.prepare_features()
     mock_custom_model.train()
-    expected_feature_names = mock_custom_model.config.num_features + mock_custom_model.config.cat_features
+    new_columns_created = mock_custom_model.pipeline.named_steps['preprocessor'].get_feature_names_out()
+    new_columns_created = new_columns_created.tolist()
+    expected_feature_names = mock_custom_model.config.num_features + mock_custom_model.config.cat_features + mock_custom_model.config.id_column + new_columns_created
 
     assert mock_custom_model.pipeline.n_features_in_ == len(expected_feature_names)
     assert sorted(expected_feature_names) == sorted(mock_custom_model.pipeline.feature_names_in_)
@@ -134,7 +171,7 @@ def test_log_model_with_PandasDataset(mock_custom_model: CustomModel) -> None:
     assert len(runs) == 1
     latest_run = runs[0]
 
-    model_uri = f"runs:/{latest_run.info.run_id}/model"
+    model_uri = f"runs:/{latest_run.info.run_id}/giridhar_tests_model"
     logger.info(f"{model_uri= }")
 
     assert model_uri
@@ -157,7 +194,7 @@ def test_register_model(mock_custom_model: CustomModel) -> None:
     mock_custom_model.register_model()
 
     client = MlflowClient()
-    model_name = f"{mock_custom_model.catalog_name}.{mock_custom_model.schema_name}.house_prices_model_custom"
+    model_name = f"{mock_custom_model.catalog_name}.{mock_custom_model.schema_name}.house_prices_test_model_custom"
 
     try:
         model = client.get_registered_model(model_name)
