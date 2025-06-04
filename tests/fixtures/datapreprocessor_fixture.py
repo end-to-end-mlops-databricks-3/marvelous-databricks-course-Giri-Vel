@@ -1,5 +1,6 @@
 """Dataloader fixture."""
 
+import os
 import pandas as pd
 import pytest
 from loguru import logger
@@ -7,31 +8,50 @@ from pyspark.sql import SparkSession
 
 from hotel_reservations import PROJECT_DIR
 from hotel_reservations.config import ProjectConfig, Tags
-from tests.unit_tests.spark_config import spark_config
+# from tests.unit_tests.spark_config import spark_config
 
+
+# Drop any Databricks-Connect flags so PySpark will let us start a local SparkSession
+for var in [
+    "SPARK_REMOTE",
+    "SPARK_MASTER",
+    "SPARK_CONNECT_MODE_ENABLED",
+    "SPARK_LOCAL_REMOTE",
+    "DATABRICKS_HOST",
+    "DATABRICKS_TOKEN",
+    "DATABRICKS_CLUSTER_ID",
+    "PYSPARK_SUBMIT_ARGS",
+]:
+    os.environ.pop(var, None)
 
 @pytest.fixture(scope="session")
-def spark_session() -> SparkSession:
+def spark_session(): # -> SparkSession:
     """Create and return a SparkSession for testing.
 
     This fixture creates a SparkSession with the specified configuration and returns it for use in tests.
     """
     # One way
     # spark = SparkSession.builder.getOrCreate()  # noqa
-    # Alternative way - better
+    # spark = (
+    #     SparkSession.builder.master(spark_config.master)
+    #     .appName(spark_config.app_name)
+    #     .config("spark.executor.cores", spark_config.spark_executor_cores)
+    #     .config("spark.executor.instances", spark_config.spark_executor_instances)
+    #     .config("spark.sql.shuffle.partitions", spark_config.spark_sql_shuffle_partitions)
+    #     .config("spark.driver.bindAddress", spark_config.spark_driver_bindAddress)
+    #     .getOrCreate()
+    # )
+
     spark = (
-        SparkSession.builder.master(spark_config.master)
-        .appName(spark_config.app_name)
-        .config("spark.executor.cores", spark_config.spark_executor_cores)
-        .config("spark.executor.instances", spark_config.spark_executor_instances)
-        .config("spark.sql.shuffle.partitions", spark_config.spark_sql_shuffle_partitions)
-        .config("spark.driver.bindAddress", spark_config.spark_driver_bindAddress)
+        SparkSession.builder
+        .master("local[*]")
+        .appName("pytest-local")
+        .config("spark.executor.cores", 1)
+        .config("spark.sql.shuffle.partitions", 1)
         .getOrCreate()
     )
-
     yield spark
     spark.stop()
-
 
 @pytest.fixture(scope="session")
 def config() -> ProjectConfig:

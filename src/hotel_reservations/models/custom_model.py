@@ -22,7 +22,7 @@ from mlflow.models import infer_signature
 from mlflow.utils.environment import _mlflow_conda_env
 from pyspark.sql import SparkSession
 from sklearn.compose import ColumnTransformer
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.metrics import accuracy_score, f1_score, classification_report
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
@@ -79,6 +79,18 @@ class CustomModel:
         :param spark: SparkSession object.
         :param code_paths: List of paths to additional code dependencies.
         """
+
+        # if spark is not None:
+        #     self.spark = spark
+        # else:
+        #     # In non‐test code, this will build a Connect‐backed SparkSession
+        #     if CustomModel.DatabricksSession:
+        #         self.spark = CustomModel.DatabricksSession.builder.getOrCreate()
+        #     else:
+        #         # fallback to a local SparkSession if neither is provided
+        #         from pyspark.sql import SparkSession as LocalSpark
+        #         self.spark = LocalSpark.builder.master("local[*]").getOrCreate()
+
         self.config = config
         self.spark = spark
 
@@ -156,21 +168,19 @@ class CustomModel:
             self.run_id = run.info.run_id
             y_pred = self.pipeline.predict(self.X_test)
 
-            # Evaluate metrics
-            mse = mean_squared_error(self.y_test, y_pred)
-            mae = mean_absolute_error(self.y_test, y_pred)
-            r2 = r2_score(self.y_test, y_pred)
+            acc = accuracy_score(self.y_test, y_pred)
+            f1 = f1_score(self.y_test, y_pred, pos_label="Not_Canceled")
+            report = classification_report(self.y_test, y_pred, output_dict=True)
 
-            logger.info(f"📊 Mean Squared Error: {mse}")
-            logger.info(f"📊 Mean Absolute Error: {mae}")
-            logger.info(f"📊 R2 Score: {r2}")
+            mlflow.log_metric("accuracy", acc)
+            mlflow.log_metric("f1_not_canceled", f1)
+            # If you want per‐class metrics:
+            for lbl, metrics in report.items():
+                if lbl in ["Canceled", "Not_Canceled"]:
+                    mlflow.log_metric(f"precision_{lbl}", metrics["precision"])
+                    mlflow.log_metric(f"recall_{lbl}", metrics["recall"])
+                    mlflow.log_metric(f"f1_{lbl}", metrics["f1-score"])
 
-            # Log parameters and metrics
-            mlflow.log_param("model_type", "LightGBM classifier with preprocessing")
-            mlflow.log_params(self.parameters)
-            mlflow.log_metric("mse", mse)
-            mlflow.log_metric("mae", mae)
-            mlflow.log_metric("r2_score", r2)
 
             # Log the model
             signature = infer_signature(model_input=self.X_train, model_output=self.pipeline.predict(self.X_train))

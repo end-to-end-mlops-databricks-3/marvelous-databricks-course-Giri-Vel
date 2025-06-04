@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/MLOPS learning/maven_mlops/marvelous-databricks-course-Giri-Vel/tests/mlruns/859350850027434598/c0742242f0cc4026a68f22a4bc846b6a/artifacts
+end_time: 1748893893736
+entry_point_name: ''
+experiment_id: '859350850027434598'
+lifecycle_stage: active
+run_id: c0742242f0cc4026a68f22a4bc846b6a
+run_name: enthused-sponge-677
+run_uuid: c0742242f0cc4026a68f22a4bc846b6a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748893886470
+status: 3
+tags: []
+user_id: lenovo

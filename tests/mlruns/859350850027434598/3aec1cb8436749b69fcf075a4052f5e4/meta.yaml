@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/MLOPS learning/maven_mlops/marvelous-databricks-course-Giri-Vel/tests/mlruns/859350850027434598/3aec1cb8436749b69fcf075a4052f5e4/artifacts
+end_time: 1748893873432
+entry_point_name: ''
+experiment_id: '859350850027434598'
+lifecycle_stage: active
+run_id: 3aec1cb8436749b69fcf075a4052f5e4
+run_name: casual-hound-618
+run_uuid: 3aec1cb8436749b69fcf075a4052f5e4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748893866410
+status: 3
+tags: []
+user_id: lenovo
