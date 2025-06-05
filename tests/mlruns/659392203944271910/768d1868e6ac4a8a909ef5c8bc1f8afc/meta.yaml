@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/MLOPS learning/maven_mlops_actual/marvelous-databricks-course-Giri-Vel/tests/mlruns/659392203944271910/768d1868e6ac4a8a909ef5c8bc1f8afc/artifacts
+end_time: 1749154114668
+entry_point_name: ''
+experiment_id: '659392203944271910'
+lifecycle_stage: active
+run_id: 768d1868e6ac4a8a909ef5c8bc1f8afc
+run_name: intelligent-mare-66
+run_uuid: 768d1868e6ac4a8a909ef5c8bc1f8afc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749154111315
+status: 3
+tags: []
+user_id: lenovo

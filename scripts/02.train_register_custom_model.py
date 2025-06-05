@@ -150,3 +150,23 @@ logger.info("Model training completed.")
 
 custom_model.register_model()
 logger.info("Registered model")
+
+
+# retrieve current run dataset
+custom_model.retrieve_current_run_dataset()
+logger.info("Retrieved current run dataset.")
+
+
+# retrieve current run metadata
+custom_model.retrieve_current_run_metadata()
+logger.info("Retrieved current run metadata.")
+
+
+# # load the latest model and predict
+# custom_model.load_latest_model_and_predict()
+# logger.info("Loaded latest model and made predictions.")
+
+input_df = custom_model.X_test.head(5)
+preds = custom_model.load_latest_model_and_predict(input_df)
+print("Predictions for a few rows are -->", preds)
+logger.info("Loaded latest model and made predictions.")

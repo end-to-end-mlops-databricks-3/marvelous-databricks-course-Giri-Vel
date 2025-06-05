@@ -1,0 +1,23 @@
+digest: f9c40f61
+name: train_set
+profile: '{"num_rows": 1451, "num_elements": 30471}'
+schema: '{"mlflow_colspec": [{"type": "string", "name": "type_of_meal_plan", "required":
+  true}, {"type": "long", "name": "required_car_parking_space", "required": true},
+  {"type": "string", "name": "room_type_reserved", "required": true}, {"type": "string",
+  "name": "market_segment_type", "required": true}, {"type": "long", "name": "no_of_adults",
+  "required": true}, {"type": "long", "name": "no_of_children", "required": true},
+  {"type": "long", "name": "no_of_weekend_nights", "required": true}, {"type": "long",
+  "name": "no_of_week_nights", "required": true}, {"type": "long", "name": "lead_time",
+  "required": true}, {"type": "long", "name": "repeated_guest", "required": true},
+  {"type": "long", "name": "no_of_previous_cancellations", "required": true}, {"type":
+  "long", "name": "no_of_previous_bookings_not_canceled", "required": true}, {"type":
+  "double", "name": "avg_price_per_room", "required": true}, {"type": "long", "name":
+  "no_of_special_requests", "required": true}, {"type": "long", "name": "arrival_date",
+  "required": true}, {"type": "long", "name": "arrival_year", "required": true}, {"type":
+  "long", "name": "arrival_month", "required": true}, {"type": "string", "name": "booking_status",
+  "required": true}, {"type": "string", "name": "Booking_ID", "required": true}, {"type":
+  "double", "name": "month_as_sin", "required": true}, {"type": "double", "name":
+  "month_as_cos", "required": true}]}'
+source: '{"tags": {"mlflow.user": "lenovo", "mlflow.source.name": "C:\\Users\\lenovo\\dbconnect311\\Lib\\site-packages\\pytest\\__main__.py",
+  "mlflow.source.type": "LOCAL"}}'
+source_type: code

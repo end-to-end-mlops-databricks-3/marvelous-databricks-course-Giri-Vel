@@ -1,11 +1,13 @@
 """Unit tests for DataProcessor."""
 
+from unittest.mock import MagicMock
+
 import pandas as pd
 import pytest
 from conftest import CATALOG_DIR
-from delta.tables import DeltaTable
-from pyspark.sql import SparkSession
+from delta.tables import DeltaTable  # noqa: F401
 
+# from pyspark.sql import SparkSession
 from hotel_reservations.config import ProjectConfig
 from hotel_reservations.data_processor import DataProcessor
 
@@ -24,7 +26,7 @@ def test_data_ingestion(sample_data: pd.DataFrame) -> None:
 def test_dataprocessor_init(
     sample_data: pd.DataFrame,
     config: ProjectConfig,
-    spark_session: SparkSession,
+    spark_session: MagicMock,  # SparkSession,
 ) -> None:
     """Test the initialization of DataProcessor.
 
@@ -37,10 +39,12 @@ def test_dataprocessor_init(
     assert processor.df.equals(sample_data)
 
     assert isinstance(processor.config, ProjectConfig)
-    assert isinstance(processor.spark, SparkSession)
+    # assert isinstance(processor.spark, SparkSession)
+    # the below is to avoid the SparkSession being None
+    assert processor.spark is not None
 
 
-def test_column_transformations(sample_data: pd.DataFrame, config: ProjectConfig, spark_session: SparkSession) -> None:
+def test_column_transformations(sample_data: pd.DataFrame, config: ProjectConfig, spark_session: MagicMock) -> None:
     """Test column transformations performed by the DataProcessor.
 
     This function checks if specific column transformations are applied correctly,
@@ -60,7 +64,7 @@ def test_column_transformations(sample_data: pd.DataFrame, config: ProjectConfig
     assert processor.df["market_segment_type"].dtype == "category"
 
 
-def test_missing_value_handling(sample_data: pd.DataFrame, config: ProjectConfig, spark_session: SparkSession) -> None:
+def test_missing_value_handling(sample_data: pd.DataFrame, config: ProjectConfig, spark_session: MagicMock) -> None:
     """Test missing value handling in the DataProcessor.
 
     This function verifies that missing values are handled correctly for
@@ -76,7 +80,7 @@ def test_missing_value_handling(sample_data: pd.DataFrame, config: ProjectConfig
     assert processor.df["booking_status"].isna().sum() == 0
 
 
-def test_column_selection(sample_data: pd.DataFrame, config: ProjectConfig, spark_session: SparkSession) -> None:
+def test_column_selection(sample_data: pd.DataFrame, config: ProjectConfig, spark_session: MagicMock) -> None:
     """Test column selection in the DataProcessor.
 
     This function checks if the correct columns are selected and present in the
@@ -98,7 +102,9 @@ def test_column_selection(sample_data: pd.DataFrame, config: ProjectConfig, spar
 
 
 def test_split_data_default_params(
-    sample_data: pd.DataFrame, config: ProjectConfig, spark_session: SparkSession
+    sample_data: pd.DataFrame,
+    config: ProjectConfig,
+    spark_session: MagicMock,  # SparkSession
 ) -> None:
     """Test the default parameters of the split_data method in DataProcessor.
 
@@ -124,7 +130,7 @@ def test_split_data_default_params(
     test.to_csv((CATALOG_DIR / "test_set.csv").as_posix(), index=False)  # noqa
 
 
-def test_preprocess_empty_dataframe(config: ProjectConfig, spark_session: SparkSession) -> None:
+def test_preprocess_empty_dataframe(config: ProjectConfig, spark_session: MagicMock) -> None:
     """Test the preprocess method with an empty DataFrame.
 
     This function tests if the preprocess method correctly handles an empty DataFrame
@@ -141,7 +147,9 @@ def test_preprocess_empty_dataframe(config: ProjectConfig, spark_session: SparkS
 
 @pytest.mark.skip(reason="depends on delta tables on Databricks")
 def test_save_to_catalog_succesfull(
-    sample_data: pd.DataFrame, config: ProjectConfig, spark_session: SparkSession
+    sample_data: pd.DataFrame,
+    config: ProjectConfig,
+    spark_session: MagicMock,  # SparkSession
 ) -> None:
     """Test the successful saving of data to the catalog.
 
@@ -165,7 +173,7 @@ def test_save_to_catalog_succesfull(
 
 @pytest.mark.skip(reason="depends on delta tables on Databrics")
 @pytest.mark.order(after=test_save_to_catalog_succesfull)
-def test_delta_table_property_of_enableChangeDataFeed_check(config: ProjectConfig, spark_session: SparkSession) -> None:
+def test_delta_table_property_of_enableChangeDataFeed_check(config: ProjectConfig, spark_session: MagicMock) -> None:
     """Check if Change Data Feed is enabled for train and test sets.
 
     Verifies that the 'delta.enableChangeDataFeed' property is set to True for both

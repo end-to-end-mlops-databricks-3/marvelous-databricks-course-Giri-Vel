@@ -239,8 +239,9 @@ class CustomModel:
         run = mlflow.get_run(self.run_id)
         dataset_info = run.inputs.dataset_inputs[0].dataset
         dataset_source = mlflow.data.get_source(dataset_info)
-        return dataset_source.load()
+
         logger.info("✅ Dataset source loaded.")
+        return dataset_source.load()
 
     def retrieve_current_run_metadata(self) -> tuple[dict, dict]:
         """Retrieve metadata from the current MLflow run.
@@ -250,8 +251,8 @@ class CustomModel:
         run = mlflow.get_run(self.run_id)
         metrics = run.data.to_dictionary()["metrics"]
         params = run.data.to_dictionary()["params"]
-        return metrics, params
         logger.info("✅ Dataset metadata loaded.")
+        return metrics, params
 
     def load_latest_model_and_predict(self, input_data: pd.DataFrame) -> np.ndarray:
         """Load the latest model (alias=latest-model) from MLflow and make predictions.

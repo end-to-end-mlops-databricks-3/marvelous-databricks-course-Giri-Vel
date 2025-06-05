@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/MLOPS learning/maven_mlops_actual/marvelous-databricks-course-Giri-Vel/tests/mlruns/659392203944271910/a8db2a2eb3c94bcfa08d6e4f46f7d789/artifacts
+end_time: 1749154123278
+entry_point_name: ''
+experiment_id: '659392203944271910'
+lifecycle_stage: active
+run_id: a8db2a2eb3c94bcfa08d6e4f46f7d789
+run_name: dapper-donkey-15
+run_uuid: a8db2a2eb3c94bcfa08d6e4f46f7d789
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749154116760
+status: 3
+tags: []
+user_id: lenovo
