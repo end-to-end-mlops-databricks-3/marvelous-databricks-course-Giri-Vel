@@ -2,11 +2,28 @@
 
 import os
 
+# from databricks.connect import DatabricksSession
 import mlflow
 import pandas as pd
 import pytest
 from conftest import CATALOG_DIR, TRACKING_URI
-from databricks.connect import DatabricksSession
+
+try:
+    from databricks.connect import DatabricksSession
+except ImportError:
+
+    class DatabricksSession:
+        """Dummy DatabricksSession stub for tests."""
+
+        def __init__(self, *args: object, **kwargs: object) -> None:
+            """Initialize dummy session."""
+            pass
+
+        def sql(self, *args: object, **kwargs: object) -> None:
+            """Stub .sql(...) to return None."""
+            return None
+
+
 from lightgbm import LGBMClassifier
 from loguru import logger
 from mlflow.entities.model_registry.registered_model import RegisteredModel
