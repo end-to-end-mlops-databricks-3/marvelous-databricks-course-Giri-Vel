@@ -76,7 +76,6 @@ def config() -> ProjectConfig:
 @pytest.fixture(scope="function")
 def sample_data(config: ProjectConfig, spark_session: MagicMock) -> pd.DataFrame:
     # def sample_data(config: ProjectConfig, spark_session: SparkSession) -> pd.DataFrame:
-
     """Create a sample DataFrame from a CSV file.
 
     This fixture reads a CSV file using either Spark or pandas, then converts it to a Pandas DataFrame,
