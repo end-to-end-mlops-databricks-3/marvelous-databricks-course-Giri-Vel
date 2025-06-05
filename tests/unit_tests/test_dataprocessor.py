@@ -64,6 +64,7 @@ def test_column_transformations(sample_data: pd.DataFrame, config: ProjectConfig
     assert processor.df["market_segment_type"].dtype == "category"
 
 
+
 def test_missing_value_handling(sample_data: pd.DataFrame, config: ProjectConfig, spark_session: MagicMock) -> None:
     """Test missing value handling in the DataProcessor.
 
@@ -78,6 +79,7 @@ def test_missing_value_handling(sample_data: pd.DataFrame, config: ProjectConfig
     processor.preprocess()
 
     assert processor.df["booking_status"].isna().sum() == 0
+
 
 
 def test_column_selection(sample_data: pd.DataFrame, config: ProjectConfig, spark_session: MagicMock) -> None:
