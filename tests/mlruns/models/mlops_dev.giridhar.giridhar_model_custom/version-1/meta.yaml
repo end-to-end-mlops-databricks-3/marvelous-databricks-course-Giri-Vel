@@ -1,14 +1,14 @@
 aliases: []
-creation_timestamp: 1748893873487
+creation_timestamp: 1749123177600
 current_stage: None
 description: null
-last_updated_timestamp: 1748893873487
+last_updated_timestamp: 1749123177600
 name: mlops_dev.giridhar.giridhar_model_custom
-run_id: 3aec1cb8436749b69fcf075a4052f5e4
+run_id: 79a52ccc9ffa4e1ba3c48bf0b4f0c0ee
 run_link: null
-source: file:///D:/MLOPS learning/maven_mlops/marvelous-databricks-course-Giri-Vel/tests/mlruns/859350850027434598/3aec1cb8436749b69fcf075a4052f5e4/artifacts/pyfunc-hotres-custom-model
+source: file:///D:/MLOPS learning/maven_mlops_actual/marvelous-databricks-course-Giri-Vel/tests/mlruns/221410968294629418/79a52ccc9ffa4e1ba3c48bf0b4f0c0ee/artifacts/pyfunc-hotres-custom-model
 status: READY
 status_message: null
-storage_location: file:///D:/MLOPS learning/maven_mlops/marvelous-databricks-course-Giri-Vel/tests/mlruns/859350850027434598/3aec1cb8436749b69fcf075a4052f5e4/artifacts/pyfunc-hotres-custom-model
+storage_location: file:///D:/MLOPS learning/maven_mlops_actual/marvelous-databricks-course-Giri-Vel/tests/mlruns/221410968294629418/79a52ccc9ffa4e1ba3c48bf0b4f0c0ee/artifacts/pyfunc-hotres-custom-model
 user_id: null
 version: 1

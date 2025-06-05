@@ -1,6 +1,7 @@
 """Dataloader fixture."""
 
 import os
+
 import pandas as pd
 import pytest
 from loguru import logger
@@ -8,6 +9,7 @@ from pyspark.sql import SparkSession
 
 from hotel_reservations import PROJECT_DIR
 from hotel_reservations.config import ProjectConfig, Tags
+
 # from tests.unit_tests.spark_config import spark_config
 
 
@@ -24,8 +26,9 @@ for var in [
 ]:
     os.environ.pop(var, None)
 
+
 @pytest.fixture(scope="session")
-def spark_session(): # -> SparkSession:
+def spark_session() -> SparkSession:
     """Create and return a SparkSession for testing.
 
     This fixture creates a SparkSession with the specified configuration and returns it for use in tests.
@@ -43,8 +46,7 @@ def spark_session(): # -> SparkSession:
     # )
 
     spark = (
-        SparkSession.builder
-        .master("local[*]")
+        SparkSession.builder.master("local[*]")
         .appName("pytest-local")
         .config("spark.executor.cores", 1)
         .config("spark.sql.shuffle.partitions", 1)
@@ -52,6 +54,7 @@ def spark_session(): # -> SparkSession:
     )
     yield spark
     spark.stop()
+
 
 @pytest.fixture(scope="session")
 def config() -> ProjectConfig:

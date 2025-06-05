@@ -1,6 +1,5 @@
 # Databricks notebook source
 from databricks.connect import DatabricksSession
-from pyspark.sql import SparkSession
 
 # Re-create the remote Spark session
 spark = DatabricksSession.builder.getOrCreate()

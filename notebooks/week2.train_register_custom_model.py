@@ -3,17 +3,16 @@
 import mlflow
 from pyspark.sql import SparkSession
 
+from hotel_reservations import __version__ as hotel_reservations_v
 from hotel_reservations.config import ProjectConfig, Tags
 from hotel_reservations.models.custom_model import CustomModel
-
-from hotel_reservations import __version__ as hotel_reservations_v
 
 # COMMAND ----------
 # Default profile:
 mlflow.set_tracking_uri("databricks")
 mlflow.set_registry_uri("databricks-uc")
 
-#config = ProjectConfig.from_yaml(config_path="../project_config.yml")
+# config = ProjectConfig.from_yaml(config_path="../project_config.yml")
 config = ProjectConfig.from_yaml(config_path="project_config.yml")
 spark = SparkSession.builder.getOrCreate()
 tags = Tags(**{"git_sha": "abcd12345", "branch": "week2"})
@@ -21,8 +20,10 @@ tags = Tags(**{"git_sha": "abcd12345", "branch": "week2"})
 # COMMAND ----------
 # Initialize model with the config path
 custom_model = CustomModel(
-    config=config, tags=tags, spark=spark,
-    code_paths=[f"../dist/hotel_reservations-{hotel_reservations_v}-py3-none-any.whl"]
+    config=config,
+    tags=tags,
+    spark=spark,
+    code_paths=[f"../dist/hotel_reservations-{hotel_reservations_v}-py3-none-any.whl"],
 )
 
 # COMMAND ----------

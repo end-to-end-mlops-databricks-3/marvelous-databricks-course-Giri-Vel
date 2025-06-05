@@ -67,11 +67,11 @@ import sys
 from pathlib import Path
 
 import mlflow
-from loguru import logger
-from pyspark.dbutils import DBUtils
+
 # from pyspark.sql import SparkSession
 from databricks.connect import DatabricksSession
-
+from loguru import logger
+from pyspark.dbutils import DBUtils
 
 # Ensure project src is on path
 sys.path.append(str(Path.cwd().parent / "src"))
@@ -98,11 +98,7 @@ try:
 except (argparse.ArgumentError, SystemExit):
     # Fallback to safe defaults when flags are missing
     args = argparse.Namespace(
-        root_path=default_config_path,
-        env="dev",
-        git_sha="123abc",
-        job_run_id="job-id-01",
-        branch="week2"
+        root_path=default_config_path, env="dev", git_sha="123abc", job_run_id="job-id-01", branch="week2"
     )
 
 root_path = args.root_path
@@ -117,9 +113,8 @@ config_path = root_path  # points to project_config.yml
 # # url = "sc://${Env:DATABRICKS_HOST}:15002?token={Env:DATABRICKS_TOKEN}&clusterId=${Env:DATABRICKS_CLUSTERID}"
 
 
-
 # # spark = SparkSession.builder.remote(url).getOrCreate()
-# # trying to see if this would work 
+# # trying to see if this would work
 # # spark.conf.set("spark.databricks.service.address", f"https://{host}")
 # # spark.conf.set("spark.databricks.service.token", token)
 # # spark.conf.set("spark.databricks.clusterId", cluster)
@@ -134,7 +129,12 @@ tags = Tags(**tags_dict)
 
 # Initialize model
 custom_model = CustomModel(
-    config=config, tags=tags, spark=spark, code_paths=["D:\MLOPS learning\maven_mlops\marvelous-databricks-course-Giri-Vel\dist\hotel_reservations-0.0.1-py3-none-any.whl"]
+    config=config,
+    tags=tags,
+    spark=spark,
+    code_paths=[
+        r"D:\MLOPS learning\maven_mlops_actual\marvelous-databricks-course-Giri-Vel\dist\hotel_reservations-0.0.1-py3-none-any.whl"
+    ],
 )
 logger.info("Model initialized.")
 

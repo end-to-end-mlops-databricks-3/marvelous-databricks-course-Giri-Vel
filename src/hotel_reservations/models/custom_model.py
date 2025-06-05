@@ -22,14 +22,12 @@ from mlflow.models import infer_signature
 from mlflow.utils.environment import _mlflow_conda_env
 from pyspark.sql import SparkSession
 from sklearn.compose import ColumnTransformer
-from sklearn.metrics import accuracy_score, f1_score, classification_report
+from sklearn.metrics import accuracy_score, classification_report, f1_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
 from hotel_reservations.config import ProjectConfig, Tags
 from hotel_reservations.utils import adjust_predictions
-from mlflow import pyfunc
-from mlflow.models import ModelSignature
 
 
 class HousePriceModelWrapper(mlflow.pyfunc.PythonModel):
@@ -46,8 +44,10 @@ class HousePriceModelWrapper(mlflow.pyfunc.PythonModel):
         self.model = model
 
     def predict(
-        self, context: mlflow.pyfunc.PythonModelContext, model_input: pd.DataFrame | np.ndarray
-    # ) -> dict[str, float]:
+        self,
+        context: mlflow.pyfunc.PythonModelContext,
+        model_input: pd.DataFrame | np.ndarray,
+        # ) -> dict[str, float]:
     ) -> pd.DataFrame:
         """Make predictions using the wrapped model.
 
@@ -79,7 +79,6 @@ class CustomModel:
         :param spark: SparkSession object.
         :param code_paths: List of paths to additional code dependencies.
         """
-
         # if spark is not None:
         #     self.spark = spark
         # else:
@@ -159,10 +158,10 @@ class CustomModel:
         """
         mlflow.set_experiment(self.experiment_name)
         additional_pip_deps = ["pyspark==3.5.0"]
-        for package in self.code_paths:
-            whl_name = package.split("/")[-1]
+        for _package in self.code_paths:
+            # whl_name = package.split("/")[-1]
             # additional_pip_deps.append(f"./code/{whl_name}")
-            additional_pip_deps.append(f"hotel_reservations==0.0.1")
+            additional_pip_deps.append("hotel_reservations==0.0.1")
 
         with mlflow.start_run(tags=self.tags) as run:
             self.run_id = run.info.run_id
@@ -180,7 +179,6 @@ class CustomModel:
                     mlflow.log_metric(f"precision_{lbl}", metrics["precision"])
                     mlflow.log_metric(f"recall_{lbl}", metrics["recall"])
                     mlflow.log_metric(f"f1_{lbl}", metrics["f1-score"])
-
 
             # Log the model
             signature = infer_signature(model_input=self.X_train, model_output=self.pipeline.predict(self.X_train))
