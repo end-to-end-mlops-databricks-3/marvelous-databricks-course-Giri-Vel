@@ -1,36 +1,62 @@
 """Dataloader fixture."""
 
+import os
+from unittest.mock import MagicMock
+
 import pandas as pd
 import pytest
 from loguru import logger
-from pyspark.sql import SparkSession
 
+# from loguru import logger
+# from pyspark.sql import SparkSession
 from hotel_reservations import PROJECT_DIR
 from hotel_reservations.config import ProjectConfig, Tags
-from tests.unit_tests.spark_config import spark_config
+
+# from tests.unit_tests.spark_config import spark_config
+
+
+# Drop any Databricks-Connect flags so PySpark will let us start a local SparkSession
+for var in [
+    "SPARK_REMOTE",
+    "SPARK_MASTER",
+    "SPARK_CONNECT_MODE_ENABLED",
+    "SPARK_LOCAL_REMOTE",
+    "DATABRICKS_HOST",
+    "DATABRICKS_TOKEN",
+    "DATABRICKS_CLUSTER_ID",
+    "PYSPARK_SUBMIT_ARGS",
+]:
+    os.environ.pop(var, None)
 
 
 @pytest.fixture(scope="session")
-def spark_session() -> SparkSession:
-    """Create and return a SparkSession for testing.
+# def spark_session() -> SparkSession:
+#     """Create and return a SparkSession for testing.
 
-    This fixture creates a SparkSession with the specified configuration and returns it for use in tests.
+#     This fixture creates a SparkSession with the specified configuration and returns it for use in tests.
+#     """
+# One way
+# spark = SparkSession.builder.getOrCreate()  # noqa
+# spark = (
+#     SparkSession.builder.master(spark_config.master)
+#     .appName(spark_config.app_name)
+#     .config("spark.executor.cores", spark_config.spark_executor_cores)
+#     .config("spark.executor.instances", spark_config.spark_executor_instances)
+#     .config("spark.sql.shuffle.partitions", spark_config.spark_sql_shuffle_partitions)
+#     .config("spark.driver.bindAddress", spark_config.spark_driver_bindAddress)
+#     .getOrCreate()
+# )
+
+# yield spark
+# spark.stop()
+def spark_session() -> MagicMock:
+    """Create a mock SparkSession for testing.
+
+    Instead of starting a real SparkSession (which would launch a JVM),
+    we now return a MagicMock. Any `spark.table(...)` or `spark.createDataFrame(...)`
+    calls elsewhere can be stubbed out on this mock.
     """
-    # One way
-    # spark = SparkSession.builder.getOrCreate()  # noqa
-    # Alternative way - better
-    spark = (
-        SparkSession.builder.master(spark_config.master)
-        .appName(spark_config.app_name)
-        .config("spark.executor.cores", spark_config.spark_executor_cores)
-        .config("spark.executor.instances", spark_config.spark_executor_instances)
-        .config("spark.sql.shuffle.partitions", spark_config.spark_sql_shuffle_partitions)
-        .config("spark.driver.bindAddress", spark_config.spark_driver_bindAddress)
-        .getOrCreate()
-    )
-
-    yield spark
-    spark.stop()
+    return MagicMock()
 
 
 @pytest.fixture(scope="session")
@@ -48,7 +74,8 @@ def config() -> ProjectConfig:
 
 
 @pytest.fixture(scope="function")
-def sample_data(config: ProjectConfig, spark_session: SparkSession) -> pd.DataFrame:
+def sample_data(config: ProjectConfig, spark_session: MagicMock) -> pd.DataFrame:
+    # def sample_data(config: ProjectConfig, spark_session: SparkSession) -> pd.DataFrame:
     """Create a sample DataFrame from a CSV file.
 
     This fixture reads a CSV file using either Spark or pandas, then converts it to a Pandas DataFrame,

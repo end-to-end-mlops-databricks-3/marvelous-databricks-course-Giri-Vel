@@ -1,0 +1,15 @@
+{
+    "_experiment_id": "3176704041890446",
+    "_name": "/Shared/hotel_reservation_giridhar",
+    "_artifact_location": "dbfs:/databricks/mlflow-tracking/3176704041890446",
+    "_lifecycle_stage": "active",
+    "_tags": {
+        "mlflow.ownerId": "1861517192635499",
+        "repository_name": "end-to-end-mlops-databricks-3/marvelous-databricks-course-Giri-Vel",
+        "mlflow.experiment.sourceName": "/Shared/hotel_reservation_giridhar",
+        "mlflow.ownerEmail": "giridharanvel@gmail.com",
+        "mlflow.experimentType": "MLFLOW_EXPERIMENT"
+    },
+    "_creation_time": 1748082312432,
+    "_last_update_time": 1748083374953
+}

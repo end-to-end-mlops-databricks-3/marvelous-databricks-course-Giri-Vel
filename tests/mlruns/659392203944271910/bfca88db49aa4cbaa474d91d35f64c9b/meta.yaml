@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/MLOPS learning/maven_mlops_actual/marvelous-databricks-course-Giri-Vel/tests/mlruns/659392203944271910/bfca88db49aa4cbaa474d91d35f64c9b/artifacts
+end_time: 1749154105473
+entry_point_name: ''
+experiment_id: '659392203944271910'
+lifecycle_stage: active
+run_id: bfca88db49aa4cbaa474d91d35f64c9b
+run_name: rare-perch-852
+run_uuid: bfca88db49aa4cbaa474d91d35f64c9b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749154100667
+status: 3
+tags: []
+user_id: lenovo

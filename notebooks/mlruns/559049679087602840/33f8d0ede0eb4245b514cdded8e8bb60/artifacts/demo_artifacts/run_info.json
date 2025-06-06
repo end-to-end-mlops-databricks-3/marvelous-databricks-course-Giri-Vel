@@ -1,0 +1,37 @@
+{
+    "info": {
+        "artifact_uri": "file:///d:/MLOPS%20learning/maven_mlops/marvelous-databricks-course-Giri-Vel/notebooks/mlruns/559049679087602840/3df1956e653b46768205a27802ab6a07/artifacts",
+        "end_time": 1748090345438,
+        "experiment_id": "559049679087602840",
+        "lifecycle_stage": "active",
+        "run_id": "3df1956e653b46768205a27802ab6a07",
+        "run_name": "demo-run",
+        "run_uuid": "3df1956e653b46768205a27802ab6a07",
+        "start_time": 1748090344607,
+        "status": "FINISHED",
+        "user_id": "lenovo"
+    },
+    "data": {
+        "metrics": {
+            "metric1": 1.0,
+            "metric2": 2.0
+        },
+        "params": {
+            "type": "demo"
+        },
+        "tags": {
+            "branch": "week2",
+            "git_sha": "1234567890abcd",
+            "mlflow.databricks.cluster.id": "0524-123004-4t0rsa83",
+            "mlflow.databricks.notebook.commandID": "1748090038279_5713971579801581167_90f08d2f7a774de0b89a223e3a2cd99c",
+            "mlflow.note.content": "demo run",
+            "mlflow.runName": "demo-run",
+            "mlflow.source.name": "c:\\Users\\lenovo\\dbconnect311\\Lib\\site-packages\\ipykernel_launcher.py",
+            "mlflow.source.type": "LOCAL",
+            "mlflow.user": "lenovo"
+        }
+    },
+    "inputs": {
+        "dataset_inputs": []
+    }
+}

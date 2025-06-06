@@ -1,9 +1,18 @@
 # Databricks notebook source
-from pyspark.sql import SparkSession
+from databricks.connect import DatabricksSession
 
-spark = SparkSession.builder.getOrCreate()
+# Re-create the remote Spark session
+spark = DatabricksSession.builder.getOrCreate()
+
+# COMMAND ----------
+# spark = SparkSession.builder.getOrCreate()
 df = spark.read.table("samples.nyctaxi.trips")
 df.show(5)
-# COMMAND ----------
-
 print("Spark version:", spark.version)
+
+# COMMAND ----------
+spark.stop()
+
+
+# COMMAND ----------
+spark.range(1).count()
