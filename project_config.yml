@@ -8,6 +8,13 @@ dev:
   catalog_name: mlops_dev
   schema_name: giridhar
 
+
+experiment_name_basic: /Shared/giridhar-packaged-hotres-basic
+experiment_name_custom: /Shared/giridhar-packaged-hotres-custom
+experiment_name_fe: /Shared/giridhar-packaged-hotres-fe
+
+
+
 id_column:
   - Booking_ID
 
