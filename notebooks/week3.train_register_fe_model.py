@@ -1,5 +1,18 @@
 # Databricks notebook source
-# MAGIC %pip install house_price-1.0.1-py3-none-any.whl
+print("hello")
+
+# COMMAND ----------
+
+# %pip install house_price-1.0.1-py3-none-any.whl
+# %pip install hotel_reservations-0.0.1-py3-none-any.whl
+
+# COMMAND ----------
+
+# %pip install -e ../
+# %pip install git+https://github.com/end-to-end-mlops-databricks-3/marvelous@0.1.0
+# %pip install python-dotenv
+# %pip install databricks-feature-engineering databricks-feature-lookup
+
 
 # COMMAND ----------
 
@@ -7,20 +20,30 @@
 
 # COMMAND ----------
 
-# Configure tracking uri
+from pathlib import Path
+import sys
+
+# Add repo’s src/ to Python path
+sys.path.append(str(Path.cwd().parent / "src"))
+
+# COMMAND ----------
+
 import mlflow
 from loguru import logger
 from pyspark.sql import SparkSession
 
-from house_price.config import ProjectConfig, Tags
-from house_price.models.feature_lookup_model import FeatureLookUpModel
+from hotel_reservations.config import ProjectConfig, Tags
+from hotel_reservations.models.feature_lookup_model import FeatureLookUpModel
+
+# COMMAND ----------
+
 
 # Configure tracking uri
 # mlflow.set_tracking_uri("databricks")
 # mlflow.set_registry_uri("databricks-uc")
 
 spark = SparkSession.builder.getOrCreate()
-tags_dict = {"git_sha": "abcd12345", "branch": "week2"}
+tags_dict = {"git_sha": "abcd12345", "branch": "week2", "job_run_id": "12345"}
 tags = Tags(**tags_dict)
 
 config = ProjectConfig.from_yaml(config_path="../project_config.yml")
@@ -96,4 +119,5 @@ predictions = fe_model.load_latest_model_and_predict(X_test)
 logger.info(predictions)
 
 # COMMAND ----------
+
 
